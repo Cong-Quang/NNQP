@@ -18,13 +18,14 @@ typedef enum {
     WHITE = 37
 } Color;
 
-void print(const char* text,int x, int y ,int color = 37){
+//in ra một chuỗi s ở vị trí x y và màu sắc dựa trên int ( 1 -15)
+void print(const char* text,int x, int y ,int color = 37){ 
     char buffer[200];
 #ifdef _WIN32
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, color);
     COORD pos = { x, y };
-    SetConsoleCursorPosition(hConsole,pos);
+    SetConsoleCursorPosition(pos,hConsole);
     sprintf(buffer, "%s", text);
     printf("%s", buffer);
 #else
@@ -33,7 +34,7 @@ void print(const char* text,int x, int y ,int color = 37){
 #endif
 }
 
-// Hàm dừng màn hình trong milliseconds mili giây
+// Hàm dừng màn hình trong milli giây 
 void pause(int milliseconds) {
 #ifdef _WIN32
     Sleep(milliseconds);
@@ -42,12 +43,9 @@ void pause(int milliseconds) {
 #endif
 }
 
-int main() {
 
-    for (int i = 0; i < 10; i++)
-    {
-        print("quăng",i,i,i);
-    }
+
+int main() {
     
 
     return 0;
