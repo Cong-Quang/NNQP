@@ -31,8 +31,8 @@ void print(const char* text,int x, int y ,int color = 37){
 #ifdef _WIN32
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, color);
-    COORD pos = { x, y };
-    SetConsoleCursorPosition(pos,hConsole);
+    COORD pos = {static_cast<SHORT>(x) , static_cast<SHORT>(y)}; //chuyển đổi kiểu int sang short
+    SetConsoleCursorPosition(hConsole, pos);
     sprintf(buffer, "%s", text);
     printf("%s", buffer);
 #else
@@ -74,5 +74,7 @@ void MenuStart(){ // khi bat dau
 int main() {
     
     MenuStart();
+
+
     return 0;
 }
