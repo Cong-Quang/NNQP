@@ -5,6 +5,12 @@
 #else
 #include <unistd.h>
 #endif
+// ========== varilaber =================
+
+//chiều  của console
+int Width = 40; 
+int Height = 20;
+// ========= system =======================
 
 // Enum màu sắc
 typedef enum {
@@ -43,10 +49,20 @@ void pause(int milliseconds) {
 #endif
 }
 
-
-
+//================== Handle ==========================
+void ClearConsole() { // clear console thay cho cls
+   for (int i = 0; i < Height + 10; i++)
+   {
+        for (int i = 0; i < Width + 10; i++)
+        {
+            printf(" ");
+        }
+        printf("\n");
+   }
+   
+}
 int main() {
     
-
+    ClearConsole();
     return 0;
 }
