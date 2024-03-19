@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -61,8 +62,17 @@ void ClearConsole() { // clear console thay cho cls
    }
    
 }
+void MenuStart(){ // khi bat dau
+    ClearConsole();
+    for (int i = 0; i < 50; i++) // thay doi mau sac sau 1s
+    {
+        print("Game Snake\n",Height/2,10,i+30);
+        pause(1000);
+    }
+    
+}
 int main() {
     
-    ClearConsole();
+    MenuStart();
     return 0;
 }
