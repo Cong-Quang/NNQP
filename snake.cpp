@@ -24,7 +24,7 @@ void print(const char* text,int x, int y ,int color = 37){
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, color);
     COORD pos = { x, y };
-    SetConsoleCursorPosition(pos,hConsole);
+    SetConsoleCursorPosition(hConsole,pos);
     sprintf(buffer, "%s", text);
     printf("%s", buffer);
 #else
