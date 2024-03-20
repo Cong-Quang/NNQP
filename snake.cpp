@@ -10,30 +10,13 @@
 #include <ncurses.h>
 #include <termios.h>
 #endif
-// ========== varilaber =================
 
+// Struct lưu vị trí
 struct Point
-{ // vi tri cho ran, moi, .....
+{
     int x, y;
     Point(int _x = 0, int _y = 0) : x(_x), y(_y) {}
 };
-
-enum Direction
-{
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-};                        // huong di chuyen
-std::vector<Point> snake; // Danh sách các điểm của rắn
-
-// chiều  của console
-int Width = 40;
-int Height = 20;
-
-Direction dir; // Hướng di chuyển hiện tại của rắn
-
-// ========= system =======================
 
 // Enum màu sắc
 typedef enum
@@ -48,14 +31,23 @@ typedef enum
     WHITE = 37
 } Color;
 
-// in ra một chuỗi s ở vị trí x y và màu sắc dựa trên int ( 1 -15)
+// Enum hướng di chuyển
+enum Direction
+{
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+};
+
+// Hàm in chuỗi tại vị trí và màu sắc cho trước
 void print(const char *text, int x, int y, int color = 37)
 {
     char buffer[200];
 #ifdef _WIN32
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, color);
-    COORD pos = {static_cast<SHORT>(x), static_cast<SHORT>(y)}; // chuyển đổi kiểu int sang short
+    COORD pos = {static_cast<SHORT>(x), static_cast<SHORT>(y)};
     SetConsoleCursorPosition(hConsole, pos);
     sprintf(buffer, "%s", text);
     printf("%s", buffer);
@@ -65,8 +57,9 @@ void print(const char *text, int x, int y, int color = 37)
 #endif
 }
 
+// Đọc phím
 char readKey()
-{ // dùng để đọc bàn phím khi đc nhấn
+{
 #ifdef _WIN32
     if (_kbhit())
     {
@@ -92,11 +85,7 @@ char readKey()
 #endif
 }
 
-void update()
-{
-}
-
-// Hàm dừng màn hình trong milli giây
+// Dừng màn hình trong milliseconds
 void pause(int milliseconds)
 {
 #ifdef _WIN32
@@ -106,10 +95,9 @@ void pause(int milliseconds)
 #endif
 }
 
-//================== Handle ==========================
-
+// Xóa màn hình
 void ClearConsole()
-{ // clear console thay cho cls
+{
 #ifdef _WIN32
     COORD topLeft = {0, 0};
     HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -121,65 +109,63 @@ void ClearConsole()
     FillConsoleOutputAttribute(console, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE, screen.dwSize.X * screen.dwSize.Y, topLeft, &written);
     SetConsoleCursorPosition(console, topLeft);
 #else
-    printf("\033[2J\033[1;1H"); // Xóa màn hình và đặt con trỏ văn bản tại vị trí (0, 0)
+    printf("\033[2J\033[1;1H"); 
 #endif
 }
+
+// Hiển thị menu với màu sắc tương ứng với vị trí
+void RenderMenu(int vt)
+{
+    switch (vt)
+    {
+    case 0:
+        print("Quang ", 5, 5, RED);
+        break;
+    case 1:
+        print("Quang ", 5, 5, GREEN);
+        break;
+    case 2:
+        print("Quang ", 5, 5, GREEN);
+        break;
+    case 3:
+        print("Quang ", 5, 5, BLUE);
+        break;
+    case 4:
+        print("Quang ", 5, 5, YELLOW);
+        break;
+    default:
+        break;
+    }
+}
+
+static int vt = 0;
 void MenuStart()
 {
-    ClearConsole();
-    int vt = 0;
-    while (1)
+    char input = readKey();
+    switch (input)
     {
-        ClearConsole(); // Xóa màn hình trước khi vẽ lại menu
-        // In các lựa chọn và hiển thị màu tương ứng
-        if (vt == 0)
-            print("Code 0", 1, 1, RED);
-        else
-            print("Code 0", 1, 1, GREEN);
-
-        if (vt == 1)
-            print("Code 1", 2, 1, RED);
-        else
-            print("Code 1", 2, 1, GREEN);
-
-        if (vt == 2)
-            print("Code 2", 3, 1, RED);
-        else
-            print("Code 2", 3, 1, GREEN);
-
-        if (vt == 3)
-            print("Code 3", 4, 1, RED);
-        else
-            print("Code 3", 4, 1, GREEN);
-
-        if (vt == 4)
-            print("Code 4", 5, 1, RED);
-        else
-            print("Code 4", 5, 1, GREEN);
-
-        char input = readKey(); // Đọc ký tự từ bàn phím
-        switch (input)
-        {
-        case 'w':
-            vt--;
-            if (vt < 0)
-            {
-                vt = 4;
-            }
-            break;
-        case 's':
-            vt++;
-            if (vt > 4)
-            {
-                vt = 0;
-            }
-            break;
-        }
+    case 'w':
+        vt--;
+        if (vt < 0)
+            vt = 0;
+        break;
+    case 's':
+        vt++;
+        if (vt > 4)
+            vt = 4;
+        break;
+    default:
+        break;
     }
+    RenderMenu(vt);
 }
 
 int main()
 {
-    MenuStart();
+    while (1)
+    {
+        MenuStart();
+        pause(50);
+    }
     return 0;
 }
