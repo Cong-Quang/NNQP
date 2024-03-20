@@ -109,38 +109,38 @@ void ClearConsole()
     FillConsoleOutputAttribute(console, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE, screen.dwSize.X * screen.dwSize.Y, topLeft, &written);
     SetConsoleCursorPosition(console, topLeft);
 #else
-    printf("\033[2J\033[1;1H"); 
+    printf("\033[2J\033[1;1H");
 #endif
 }
 
 // Hiển thị menu với màu sắc tương ứng với vị trí
-void RenderMenu(int vt)//Gan vitri cho menu
+void RenderMenu(int vt) // Gan vitri cho menu
 {
     switch (vt)
     {
     case 0:
-        print("<> PLAY GAME <>",18,10,GREEN);
-        print("    HELP   ",20,12,RED);
-        print("  SETTING  ",20,14,RED);
-        print("    EXIT   ",20,16,RED);
+        print("<o> PLAY GAME   ", 18, 10, GREEN);
+        print("      HELP     ", 20, 12, RED);
+        print("    SETTING    ", 20, 14, RED);
+        print("      EXIT     ", 20, 16, RED);
         break;
     case 1:
-        print(" PLAY GAME ",20,10,RED);
-        print("<>    HELP   <>",18,12,GREEN);
-        print("  SETTING  ",20,14,RED);
-        print("    EXIT   ",20,16,RED);
+        print("   PLAY GAME   ", 20, 10, RED);
+        print("<o>    HELP     ", 18, 12, GREEN);
+        print("    SETTING    ", 20, 14, RED);
+        print("      EXIT     ", 20, 16, RED);
         break;
     case 2:
-        print(" PLAY GAME ",20,10,RED);
-        print("    HELP   ",20,12,RED);
-        print("<>  SETTING  <>",18,14,GREEN);
-        print("    EXIT   ",20,16,RED);
+        print("   PLAY GAME   ", 20, 10, RED);
+        print("      HELP     ", 20, 12, RED);
+        print("<o>  SETTING    ", 18, 14, GREEN);
+        print("      EXIT     ", 20, 16, RED);
         break;
     case 3:
-        print(" PLAY GAME ",20,10,RED);
-        print("    HELP   ",20,12,RED);
-        print("  SETTING  ",20,14,RED);
-        print("<>    EXIT   <>",18,16,GREEN);
+        print("   PLAY GAME   ", 20, 10, RED);
+        print("      HELP     ", 20, 12, RED);
+        print("    SETTING    ", 20, 14, RED);
+        print("<o>    EXIT     ", 18, 16, GREEN);
         break;
 
     default:
@@ -148,16 +148,19 @@ void RenderMenu(int vt)//Gan vitri cho menu
     }
 }
 
-void Manhinh(){//Code in menu
-    for(int i=0;i<52;i++){
-        print(" ",i,0,(i*10)+30);
-        print(" ",i,26,(i*10)+30);
+void Manhinh()
+{ // Code in menu
+    for (int i = 0; i < 52; i++)
+    {
+        print(" ", i, 0, (i * 10) + 30);
+        print(" ", i, 26, (i * 10) + 30);
     }
-    for(int i=0;i<14;i++){
-        print(" PLAY GAME ",20,10,GREEN);
-        print("    HELP   ",20,12,RED);
-        print("  SETTING  ",20,14,RED);
-        print("    EXIT   ",20,16,RED);
+    for (int i = 0; i < 14; i++)
+    {
+        print(" PLAY GAME ", 20, 10, GREEN);
+        print("    HELP   ", 20, 12, RED);
+        print("  SETTING  ", 20, 14, RED);
+        print("    EXIT   ", 20, 16, RED);
     }
 }
 
@@ -179,6 +182,19 @@ void MenuStart()
         if (vt > 3)
             vt = 3;
         break;
+        // sử lý phím khi enter vào vt bất kỳ
+    case ' ': // phím space
+       print("Selected: ", 1, 1, WHITE);
+        switch (vt)
+        {
+        case 0:
+             print("PLAY GAME: ", 1, 2, WHITE); //  mốt thêm logic ở đâu (gọi 1 hàm khác vào các kiểu)
+            exit(1); // làm xong thoát luôn,
+        
+        default:
+            break;
+        }
+        break;
     default:
         break;
     }
@@ -187,6 +203,8 @@ void MenuStart()
 
 int main()
 {
+    system("cls");
+    system("title = Snake G");
     while (1)
     {
         MenuStart();
