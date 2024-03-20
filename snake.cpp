@@ -184,13 +184,13 @@ void MenuStart()
         break;
         // sử lý phím khi enter vào vt bất kỳ
     case ' ': // phím space
-       print("Selected: ", 1, 1, WHITE);
+        print("Selected: ", 1, 1, WHITE);
         switch (vt)
         {
         case 0:
-             print("PLAY GAME: ", 1, 2, WHITE); //  mốt thêm logic ở đâu (gọi 1 hàm khác vào các kiểu)
-            exit(1); // làm xong thoát luôn,
-        
+            print("PLAY GAME: ", 1, 2, WHITE); //  mốt thêm logic ở đâu (gọi 1 hàm khác vào các kiểu)
+            exit(0);                           // làm xong thoát luôn,
+
         default:
             break;
         }
