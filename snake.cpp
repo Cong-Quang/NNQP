@@ -94,27 +94,6 @@ char readKey()
 
 void update()
 {
-    char input = readKey();
-    // Đọc phím người chơi và thiết lập hướng di chuyển
-    switch (input)
-    {
-    case 'w':
-        if (dir != DOWN) // Không thể di chuyển ngược lại với hướng hiện tại
-            dir = UP;
-        break;
-    case 's':
-        if (dir != UP)
-            dir = DOWN;
-        break;
-    case 'a':
-        if (dir != RIGHT)
-            dir = LEFT;
-        break;
-    case 'd':
-        if (dir != LEFT)
-            dir = RIGHT;
-        break;
-    }
 }
 
 // Hàm dừng màn hình trong milli giây
@@ -148,23 +127,57 @@ void ClearConsole()
 void MenuStart()
 {
     ClearConsole();
-    char key;
+    int vt = 0;
     while (1)
     {
-        ClearConsole();
-        key = readKey();
-        if (key != '\0')
+        ClearConsole(); // Xóa màn hình trước khi vẽ lại menu
+        // In các lựa chọn và hiển thị màu tương ứng
+        if (vt == 0)
+            print("Code 0", 1, 1, RED);
+        else
+            print("Code 0", 1, 1, GREEN);
+
+        if (vt == 1)
+            print("Code 1", 2, 1, RED);
+        else
+            print("Code 1", 2, 1, GREEN);
+
+        if (vt == 2)
+            print("Code 2", 3, 1, RED);
+        else
+            print("Code 2", 3, 1, GREEN);
+
+        if (vt == 3)
+            print("Code 3", 4, 1, RED);
+        else
+            print("Code 3", 4, 1, GREEN);
+
+        if (vt == 4)
+            print("Code 4", 5, 1, RED);
+        else
+            print("Code 4", 5, 1, GREEN);
+
+        char input = readKey(); // Đọc ký tự từ bàn phím
+        switch (input)
         {
-            printf("Key pressed: %c\n", key);
-        }
-        // Thêm logic xử lý tại đây
-        // Ví dụ: dừng vòng lặp nếu phím Esc được nhấn
-        if (key == 27)
-        {
+        case 'w':
+            vt--;
+            if (vt < 0)
+            {
+                vt = 4;
+            }
+            break;
+        case 's':
+            vt++;
+            if (vt > 4)
+            {
+                vt = 0;
+            }
             break;
         }
     }
 }
+
 int main()
 {
     MenuStart();
