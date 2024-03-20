@@ -45,12 +45,6 @@ void print(const char *text, int x, int y, int color = 37)
 {
     char buffer[200];
 #ifdef _WIN32
-    // ẩn con trỏ nhấp nháy
-    CONSOLE_CURSOR_INFO cursorInfo;
-    cursorInfo.dwSize = 100;
-    cursorInfo.bVisible = FALSE;
-    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
-    //
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, color);
     COORD pos = {static_cast<SHORT>(x), static_cast<SHORT>(y)};
@@ -58,9 +52,7 @@ void print(const char *text, int x, int y, int color = 37)
     sprintf(buffer, "%s", text);
     printf("%s", buffer);
 #else
-
     sprintf(buffer, "\033[%d;%dH\033[%dm%s\033[0m", x, y, color, text);
-    printf("\e[?25l");
     printf("%s", buffer);
 #endif
 }
@@ -117,44 +109,77 @@ void ClearConsole()
     FillConsoleOutputAttribute(console, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE, screen.dwSize.X * screen.dwSize.Y, topLeft, &written);
     SetConsoleCursorPosition(console, topLeft);
 #else
-    printf("\033[2J\033[1;1H");
+    printf("\033[2J\033[1;1H"); 
 #endif
 }
 
-void RenderMenu(int vt)
+// Hiển thị menu với màu sắc tương ứng với vị trí
+void RenderMenu(int vt)//Gan vitri cho menu
 {
-    print("MENU", 5, 5, GREEN);
-    print("1. Bắt đầu", 7, 7, vt == 0 ? BLUE : WHITE);
-    print("2. Hướng dẫn", 7, 8, vt == 1 ? BLUE : WHITE);
-    print("3. Thoát", 7, 9, vt == 2 ? BLUE : WHITE);
+    switch (vt)
+    {
+    case 0:
+        print("<> PLAY GAME <>",18,10,GREEN);
+        print("    HELP   ",20,12,RED);
+        print("  SETTING  ",20,14,RED);
+        print("    EXIT   ",20,16,RED);
+        break;
+    case 1:
+        print(" PLAY GAME ",20,10,RED);
+        print("<>    HELP   <>",18,12,GREEN);
+        print("  SETTING  ",20,14,RED);
+        print("    EXIT   ",20,16,RED);
+        break;
+    case 2:
+        print(" PLAY GAME ",20,10,RED);
+        print("    HELP   ",20,12,RED);
+        print("<>  SETTING  <>",18,14,GREEN);
+        print("    EXIT   ",20,16,RED);
+        break;
+    case 3:
+        print(" PLAY GAME ",20,10,RED);
+        print("    HELP   ",20,12,RED);
+        print("  SETTING  ",20,14,RED);
+        print("<>    EXIT   <>",18,16,GREEN);
+        break;
+
+    default:
+        break;
+    }
+}
+
+void Manhinh(){//Code in menu
+    for(int i=0;i<52;i++){
+        print(" ",i,0,(i*10)+30);
+        print(" ",i,26,(i*10)+30);
+    }
+    for(int i=0;i<14;i++){
+        print(" PLAY GAME ",20,10,GREEN);
+        print("    HELP   ",20,12,RED);
+        print("  SETTING  ",20,14,RED);
+        print("    EXIT   ",20,16,RED);
+    }
 }
 
 static int vt = 0;
 void MenuStart()
 {
-    char key = readKey();
-    switch (key)
+    ClearConsole();
+    Manhinh();
+    char input = readKey();
+    switch (input)
     {
     case 'w':
-        vt = (vt - 1 + 3) % 3;
+        vt--;
+        if (vt < 0)
+            vt = 0;
         break;
     case 's':
-        vt = (vt + 1) % 3;
+        vt++;
+        if (vt > 3)
+            vt = 3;
         break;
-    case '\n':
-        // Xử lý sự kiện chọn
-        switch (vt)
-        {
-        case 0:
-            // Bắt đầu trò chơi
-            break;
-        case 1:
-            // Hiển thị hướng dẫn
-            break;
-        case 2:
-            // Thoát game
-            return;
-        }
+    default:
         break;
     }
     RenderMenu(vt);
@@ -162,10 +187,10 @@ void MenuStart()
 
 int main()
 {
-    while (true)
+    while (1)
     {
         MenuStart();
-        pause(100);
+        pause(50);
     }
     return 0;
 }
