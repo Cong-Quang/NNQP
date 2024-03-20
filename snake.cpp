@@ -41,7 +41,7 @@ enum Direction
 };
 
 // Hàm in chuỗi tại vị trí và màu sắc cho trước
-void print(const char *text, int x, int y, int color = 37)
+void print(const char *text, int x, int y, int color )
 {
     char buffer[200];
 #ifdef _WIN32
@@ -148,6 +148,21 @@ void RenderMenu(int vt) // Gan vitri cho menu
     }
 }
 
+void RenderMenusetting(int dk){//Gán thanh độ khó setting.
+    switch (dk){
+    case 0:
+        print(" ",10,13,BLUE);
+        break;
+    case 1:
+        for(int i=0;i<=16;i++){
+        print(" ",10+i,13,BLUE);
+    }break;
+    case 2:
+        for(int i=0;i<=32;i++){
+        print(" ",10+i,13,BLUE);
+    }break;
+    }
+}
 void Manhinh()
 { // Code in menu
     for (int i = 0; i < 52; i++)
@@ -155,15 +170,52 @@ void Manhinh()
         print(" ", i, 0, (i * 10) + 30);
         print(" ", i, 26, (i * 10) + 30);
     }
-    for (int i = 0; i < 14; i++)
-    {
         print(" PLAY GAME ", 20, 10, GREEN);
         print("    HELP   ", 20, 12, RED);
         print("  SETTING  ", 20, 14, RED);
         print("    EXIT   ", 20, 16, RED);
-    }
 }
-
+//Màn hình help 
+void ManhinhHelp (){
+    ClearConsole();
+	print("Dung 4 phim a w d s de dieu khien con ran",6,12,2);
+    print("Bam pham Enter de qua lai luc nay",10,14,2);
+    getchar();
+}
+//Màn hình setting (còn làm dở).
+void Manhinhsetting (){
+    ClearConsole();
+     for (int i = 0; i < 52; i++)
+    {
+        print(" ", i, 0, (i * 10) + 30);
+        print(" ", i, 26, (i * 10) + 30);
+    }
+    print("EASY",10,11,1);
+    print("HARD",38,11,3);
+    print(" ",9,13,WHITE);
+    print(" ",43,13,WHITE);
+    for(int i=0;i<=32;i++){
+        print(" ",10+i,12,WHITE);
+        print(" ",10+i,14,WHITE);
+    }
+    char input = readKey();//
+    int dk=0;              // 
+     switch (input)         //
+    {                       //
+    case 'w':               //
+        dk--;               //funtion chưa hoạt động.
+        if (dk < 0)         //
+            dk = 0;         //      
+        break;              //
+    case 's':               //
+        dk++;               //
+        if (dk > 2)         //
+            dk = 2;         //
+        break;
+}
+    RenderMenusetting(dk);//Lựa chọn lever chưa hoạt động.
+    getchar();
+}
 static int vt = 0;
 void MenuStart()
 {
@@ -184,13 +236,20 @@ void MenuStart()
         break;
         // sử lý phím khi enter vào vt bất kỳ
     case ' ': // phím space
+        ClearConsole();
         print("Selected: ", 1, 1, WHITE);
         switch (vt)
         {
         case 0:
             print("PLAY GAME: ", 1, 2, WHITE); //  mốt thêm logic ở đâu (gọi 1 hàm khác vào các kiểu)
             exit(0);                           // làm xong thoát luôn,
-
+        case 1:
+            system("cls");
+            ManhinhHelp();//Lựa chọn màn hình Help. 
+            break;
+        case 2:
+            system("cls");
+            Manhinhsetting ();//Lựa chọn màn hình setting.
         default:
             break;
         }
@@ -208,7 +267,7 @@ int main()
     while (1)
     {
         MenuStart();
-        pause(50);
+        pause(100);
     }
     return 0;
 }
