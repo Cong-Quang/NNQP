@@ -45,6 +45,12 @@ void print(const char *text, int x, int y, int color = 37)
 {
     char buffer[200];
 #ifdef _WIN32
+    // ẩn con trỏ nhấp nháy
+    CONSOLE_CURSOR_INFO cursorInfo;
+    cursorInfo.dwSize = 100;
+    cursorInfo.bVisible = FALSE;
+    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
+    //
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, color);
     COORD pos = {static_cast<SHORT>(x), static_cast<SHORT>(y)};
@@ -52,7 +58,9 @@ void print(const char *text, int x, int y, int color = 37)
     sprintf(buffer, "%s", text);
     printf("%s", buffer);
 #else
+
     sprintf(buffer, "\033[%d;%dH\033[%dm%s\033[0m", x, y, color, text);
+    printf("\e[?25l");
     printf("%s", buffer);
 #endif
 }
@@ -109,52 +117,44 @@ void ClearConsole()
     FillConsoleOutputAttribute(console, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE, screen.dwSize.X * screen.dwSize.Y, topLeft, &written);
     SetConsoleCursorPosition(console, topLeft);
 #else
-    printf("\033[2J\033[1;1H"); 
+    printf("\033[2J\033[1;1H");
 #endif
 }
 
-// Hiển thị menu với màu sắc tương ứng với vị trí
 void RenderMenu(int vt)
 {
-    switch (vt)
-    {
-    case 0:
-        print("Quang ", 5, 5, RED);
-        break;
-    case 1:
-        print("Quang ", 5, 5, GREEN);
-        break;
-    case 2:
-        print("Quang ", 5, 5, GREEN);
-        break;
-    case 3:
-        print("Quang ", 5, 5, BLUE);
-        break;
-    case 4:
-        print("Quang ", 5, 5, YELLOW);
-        break;
-    default:
-        break;
-    }
+    print("MENU", 5, 5, GREEN);
+    print("1. Bắt đầu", 7, 7, vt == 0 ? BLUE : WHITE);
+    print("2. Hướng dẫn", 7, 8, vt == 1 ? BLUE : WHITE);
+    print("3. Thoát", 7, 9, vt == 2 ? BLUE : WHITE);
 }
 
 static int vt = 0;
 void MenuStart()
 {
-    char input = readKey();
-    switch (input)
+    char key = readKey();
+    switch (key)
     {
     case 'w':
-        vt--;
-        if (vt < 0)
-            vt = 0;
+        vt = (vt - 1 + 3) % 3;
         break;
     case 's':
-        vt++;
-        if (vt > 4)
-            vt = 4;
+        vt = (vt + 1) % 3;
         break;
-    default:
+    case '\n':
+        // Xử lý sự kiện chọn
+        switch (vt)
+        {
+        case 0:
+            // Bắt đầu trò chơi
+            break;
+        case 1:
+            // Hiển thị hướng dẫn
+            break;
+        case 2:
+            // Thoát game
+            return;
+        }
         break;
     }
     RenderMenu(vt);
@@ -162,10 +162,10 @@ void MenuStart()
 
 int main()
 {
-    while (1)
+    while (true)
     {
         MenuStart();
-        pause(50);
+        pause(100);
     }
     return 0;
 }
