@@ -40,8 +40,9 @@ enum Direction
     RIGHT
 };
 
+
 // Hàm in chuỗi tại vị trí và màu sắc cho trước
-void print(const char *text, int x, int y, int color )
+void print(const char *text, int x, int y, int color)
 {
     char buffer[200];
 #ifdef _WIN32
@@ -114,53 +115,81 @@ void ClearConsole()
 }
 
 // Hiển thị menu với màu sắc tương ứng với vị trí
-void RenderMenu(int vt) // Gan vitri cho menu
+void RenderMenu(int vt, bool &l_Flag) // Gan vitri cho menu
 {
+    if (l_Flag == false)
+    {
+        return;
+    }
+    
+    ClearConsole();
+    for (int i = 0; i < 52; i++)
+    {
+        print(" ", i, 0, (i * 10) + 30);
+        print(" ", i, 26, (i * 10) + 30);
+    }
     switch (vt)
     {
-    case 0:
-        print("<o> PLAY GAME   ", 18, 10, GREEN);
-        print("      HELP     ", 20, 12, RED);
-        print("    SETTING    ", 20, 14, RED);
-        print("      EXIT     ", 20, 16, RED);
-        break;
-    case 1:
-        print("   PLAY GAME   ", 20, 10, RED);
-        print("<o>    HELP     ", 18, 12, GREEN);
-        print("    SETTING    ", 20, 14, RED);
-        print("      EXIT     ", 20, 16, RED);
-        break;
-    case 2:
-        print("   PLAY GAME   ", 20, 10, RED);
-        print("      HELP     ", 20, 12, RED);
-        print("<o>  SETTING    ", 18, 14, GREEN);
-        print("      EXIT     ", 20, 16, RED);
-        break;
-    case 3:
-        print("   PLAY GAME   ", 20, 10, RED);
-        print("      HELP     ", 20, 12, RED);
-        print("    SETTING    ", 20, 14, RED);
-        print("<o>    EXIT     ", 18, 16, GREEN);
-        break;
-
+        case 0:
+        {
+            print("<o> PLAY GAME   ", 18, 10, GREEN);
+            print("      HELP     ", 20, 12, RED);
+            print("    SETTING    ", 20, 14, RED);
+            print("      EXIT     ", 20, 16, RED);
+            l_Flag = false;
+            break;
+        }
+        case 1:
+        {
+            print("   PLAY GAME   ", 20, 10, RED);
+            print("<o>    HELP     ", 18, 12, GREEN);
+            print("    SETTING    ", 20, 14, RED);
+            print("      EXIT     ", 20, 16, RED);
+            l_Flag = false;
+            break;
+        }
+        case 2:
+        {
+            print("   PLAY GAME   ", 20, 10, RED);
+            print("      HELP     ", 20, 12, RED);
+            print("<o>  SETTING    ", 18, 14, GREEN);
+            print("      EXIT     ", 20, 16, RED);
+            l_Flag = false;
+            break;
+        }
+        case 3:
+        {
+            print("   PLAY GAME   ", 20, 10, RED);
+            print("      HELP     ", 20, 12, RED);
+            print("    SETTING    ", 20, 14, RED);
+            print("<o>    EXIT     ", 18, 16, GREEN);
+            l_Flag = false;
+            break;
+        }
     default:
         break;
     }
 }
 
-void RenderMenusetting(int dk){//Gán thanh độ khó setting.
-    switch (dk){
+void RenderMenusetting(int dk)
+{ // Gán thanh độ khó setting.
+    switch (dk)
+    {
     case 0:
-        print(" ",10,13,BLUE);
+        print(" ", 10, 13, BLUE);
         break;
     case 1:
-        for(int i=0;i<=16;i++){
-        print(" ",10+i,13,BLUE);
-    }break;
+        for (int i = 0; i <= 16; i++)
+        {
+            print(" ", 10 + i, 13, BLUE);
+        }
+        break;
     case 2:
-        for(int i=0;i<=32;i++){
-        print(" ",10+i,13,BLUE);
-    }break;
+        for (int i = 0; i <= 32; i++)
+        {
+            print(" ", 10 + i, 13, BLUE);
+        }
+        break;
     }
 }
 void Manhinh()
@@ -170,104 +199,129 @@ void Manhinh()
         print(" ", i, 0, (i * 10) + 30);
         print(" ", i, 26, (i * 10) + 30);
     }
-        print(" PLAY GAME ", 20, 10, GREEN);
-        print("    HELP   ", 20, 12, RED);
-        print("  SETTING  ", 20, 14, RED);
-        print("    EXIT   ", 20, 16, RED);
+    print(" PLAY GAME ", 20, 10, GREEN);
+    print("    HELP   ", 20, 12, RED);
+    print("  SETTING  ", 20, 14, RED);
+    print("    EXIT   ", 20, 16, RED);
 }
-//Màn hình help 
-void ManhinhHelp (){
+// Màn hình help
+void ManhinhHelp()
+{
     ClearConsole();
-	print("Dung 4 phim a w d s de dieu khien con ran",6,12,2);
-    print("Bam pham Enter de qua lai luc nay",10,14,2);
+    print("Dung 4 phim a w d s de dieu khien con ran", 6, 12, 2);
+    print("Bam pham Enter de qua lai luc nay", 10, 14, 2);
     getchar();
 }
-//Màn hình setting (còn làm dở).
-void Manhinhsetting (){
+// Màn hình setting (còn làm dở).
+void Manhinhsetting()
+{
     ClearConsole();
-     for (int i = 0; i < 52; i++)
+    for (int i = 0; i < 52; i++)
     {
         print(" ", i, 0, (i * 10) + 30);
         print(" ", i, 26, (i * 10) + 30);
     }
-    print("EASY",10,11,1);
-    print("HARD",38,11,3);
-    print(" ",9,13,WHITE);
-    print(" ",43,13,WHITE);
-    for(int i=0;i<=32;i++){
-        print(" ",10+i,12,WHITE);
-        print(" ",10+i,14,WHITE);
+    print("EASY", 10, 11, 1);
+    print("HARD", 38, 11, 3);
+    print(" ", 9, 13, WHITE);
+    print(" ", 43, 13, WHITE);
+    for (int i = 0; i <= 32; i++)
+    {
+        print(" ", 10 + i, 12, WHITE);
+        print(" ", 10 + i, 14, WHITE);
     }
-    char input = readKey();//
-    int dk=0;              // 
-     switch (input)         //
+    char input = readKey(); //
+    int dk = 0;             //
+    switch (input)          //
     {                       //
     case 'w':               //
-        dk--;               //funtion chưa hoạt động.
+        dk--;               // funtion chưa hoạt động.
         if (dk < 0)         //
-            dk = 0;         //      
+            dk = 0;         //
         break;              //
     case 's':               //
         dk++;               //
         if (dk > 2)         //
             dk = 2;         //
         break;
-}
-    RenderMenusetting(dk);//Lựa chọn lever chưa hoạt động.
+    }
+    RenderMenusetting(dk); // Lựa chọn lever chưa hoạt động.
     getchar();
 }
 static int vt = 0;
+
 void MenuStart()
 {
-    ClearConsole();
-    Manhinh();
-    char input = readKey();
-    switch (input)
+    // ClearConsole();
+    // Manhinh(); -> del
+    bool l_Flag = false;
+    while (true)
     {
-    case 'w':
-        vt--;
-        if (vt < 0)
-            vt = 0;
-        break;
-    case 's':
-        vt++;
-        if (vt > 3)
-            vt = 3;
-        break;
-        // sử lý phím khi enter vào vt bất kỳ
-    case ' ': // phím space
-        ClearConsole();
-        print("Selected: ", 1, 1, WHITE);
-        switch (vt)
+        char input = readKey();
+        switch (input)
         {
-        case 0:
-            print("PLAY GAME: ", 1, 2, WHITE); //  mốt thêm logic ở đâu (gọi 1 hàm khác vào các kiểu)
-            exit(0);                           // làm xong thoát luôn,
-        case 1:
-            system("cls");
-            ManhinhHelp();//Lựa chọn màn hình Help. 
-            break;
-        case 2:
-            system("cls");
-            Manhinhsetting ();//Lựa chọn màn hình setting.
-        default:
-            break;
+            case 'w':
+            {
+                vt--;
+                if (vt < 0)
+                {
+                    vt = 0;
+                }
+                l_Flag = true;
+                break;
+            }
+            case 's':
+            {
+                vt++;
+                if (vt > 3)
+                {
+                    vt = 3;
+                }
+                l_Flag = true;
+                break;
+            }
+            // sử lý phím khi enter vào vt bất kỳ
+            case ' ': // phím space
+            {
+                ClearConsole();
+                print("Selected: ", 1, 1, WHITE);
+                switch (vt)
+                {
+                    case 0:
+                    {
+                        print("PLAY GAME: ", 1, 2, WHITE); //  mốt thêm logic ở đâu (gọi 1 hàm khác vào các kiểu)
+                        exit(0);
+                    }
+                    case 1:
+                    {
+                        system("cls");
+                        ManhinhHelp(); // Lựa chọn màn hình Help.
+                        break;
+                    }
+                    case 2:
+                    {
+                        system("cls");
+                        Manhinhsetting(); // Lựa chọn màn hình setting.
+                        break;
+                    }
+                    default:
+                        break;
+                    }
+                break;
+            }
+            default:
+                break;
         }
-        break;
-    default:
-        break;
+        RenderMenu(vt, l_Flag);
     }
-    RenderMenu(vt);
 }
 
 int main()
 {
     system("cls");
     system("title = Snake G");
-    while (1)
-    {
-        MenuStart();
-        pause(100);
-    }
+    ClearConsole();
+    Manhinh();
+    MenuStart();
     return 0;
 }
