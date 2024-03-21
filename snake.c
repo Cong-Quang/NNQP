@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
-#define GAME_VERSION	"0.4"
+#define GAME_VERSION	"0.1"
 #define	GAME_SPEED		100
 #define	WINDOW_WIDTH	640
 #define	WINDOW_HEIGHT	480
@@ -116,7 +116,7 @@ bool snake_init() {
 		return false;
 	}
 
-	sprintf(title, "Snake %s - Trinh D.D. Nguyen", GAME_VERSION);
+	sprintf(title, "Snake Game - A5                  version: [%s]", GAME_VERSION);
 	g_wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
 									WINDOW_WIDTH,  WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	if (!g_wnd) {
