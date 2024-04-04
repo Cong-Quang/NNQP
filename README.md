@@ -6,8 +6,8 @@
 <h1>Commit</h1> <p>Ghi chú cụ thể là update cái gì mới</p>
 <p>chỉ commit file cpp lên thôi nhớ</p>
 <h2=color:red> Team</h2>
-# CodeTeam
-<h1>23DTHA5-Team<\h1>
+
+<h1>23DTHA5-Team</h1>
 <p>1) Nguyễn Trường Phát 2380601640</p>
 <p>2) Lê Huỳnh Ngọc 2380601465</p>
 <p>3) Nguyễn Thanh Bảo Ngân 2380601424</p>
